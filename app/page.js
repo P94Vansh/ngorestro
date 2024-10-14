@@ -1,101 +1,145 @@
-import Image from "next/image";
-
+'use client'
+import * as dotenv from 'dotenv';
+dotenv.config();
+import Link from "next/link";
+import jwt from "jsonwebtoken";
+import { useState,useEffect } from "react";
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [login,setLogin]=useState(false);
+  const [linkHref, setLinkHref] = useState("/signUp");
+  const [getRequests,setGetRequests]=useState("/signUp");
+  const [userName, setUserName] = useState({organisationType:'',organisationName:'',phoneNumber:''});
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    try{
+    const token = localStorage.getItem("token");
+    if (token) {
+      setLinkHref(`/donationForm/${token}`);
+      setLogin(true);
+    }
+  }
+  catch(error){
+    console.log(error)
+  }
+  }, []);
+
+  useEffect(() => {
+    try{  
+    const token = localStorage.getItem("token");
+    const decodedToken = jwt.decode(token,process.env.JWT_SECRET);
+    console.log(decodedToken)
+    const userId = decodedToken.userId;
+    if (token) {
+      setGetRequests(`/notification/${userId}`);
+    }
+  }
+  catch(error){
+    console.log(error)
+  }
+  }, []);
+
+  useEffect(()=>{
+    const fetchUserName = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const decodedToken = jwt.decode(token,process.env.JWT_SECRET);
+        const userId = decodedToken.userId;
+        console.log(userId)
+        if (userId) {
+          const response = await fetch(`/api/signUp?userId=${userId}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+
+
+          const data = await response.json();
+          console.log(data.organisationType)
+          setUserName(data);
+        }
+      } catch (error) {
+        console.error('Error fetching userName:', error.message);
+      }
+    };
+
+    fetchUserName();
+  }, []);
+  return (
+    <div className="overflow-hidden">
+      <div style={{ position: 'relative', width: '100vw', height: '70vh' }}>
+        <div
+          style={{
+            backgroundImage: `url('/firstPage.jpg')`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            width: "100%",
+            height: "100%",
+            filter: 'brightness(50%)', // Keep this for the background
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: 1,
+
+          }}
+        />
+        <div className="flex  flex-col items-center justify-center h-full">
+          <div style={{ color: 'white', position: 'relative', zIndex: 2 }} className='text-4xl font-bold'>FIGHT HUNGER, SAVE FOOD,</div>
+          <div style={{ color: 'white', position: 'relative', zIndex: 2 }} className='text-4xl font-bold'>SHARE A MEAL</div>
+          <Link href="/signUp"> <button className="relative inline-block text-lg group mt-4">
+          {!login && <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
+                  <span className="absolute inset-0 w-full h-full px-4 py-2 rounded-lg bg-green-400"></span>
+              <span className="absolute left-0 w-48 h-48 -ml-2 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-gray-900 group-hover:-rotate-180 ease"></span>
+             <span className="relative">Get Started</span>
+            </span>
+            }
+            <span className="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-gray-900 rounded-lg group-hover:mb-0 group-hover:mr-0" data-rounded="rounded-lg"></span>
+            </button>
+          </Link>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+      <div className="flex justify-center items-center py-10 bg-green-800">
+        <div className="flex gap-6">
+          {/* Card 1 */}
+          {userName.organisationType==="Restaurant" &&
+          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black">
+            <h2 className="text-xl font-bold mb-2">DONATE NOW</h2>
+            <p className="mb-4">
+              Donate your surplus food to help those in need and promote sustainability. Every contribution counts—whether you&apos;re a restaurant, grocery store, or individual.
+            </p>
+            <Link href={linkHref}>
+            <button className="bg-green-400 text-black font-bold py-2 px-4 rounded hover:bg-green-500">
+              DONATE
+            </button>
+            </Link>
+          </div>
+          }
+          {/* Card 2 */}
+          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black">
+            <h2 className="text-xl font-bold mb-2">FIND AVAILABLE FOOD</h2>
+            <p className="mb-4">
+              Browse surplus food from local businesses and individuals ready for pickup. Discover fresh fruits, vegetables, baked goods, and meals while helping to reduce food waste.
+            </p>
+            <button className="bg-green-400 text-black font-bold py-2 px-4 rounded hover:bg-green-500">
+              FIND
+            </button>
+          </div>
+          {userName.organisationType==="NGO" &&
+          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black">
+            <h2 className="text-xl font-bold mb-2">GET YOUR REQUESTS</h2>
+            <p className="mb-4">
+              Get your requests from the Restaurants .
+            </p>
+            <Link href={getRequests}>
+            <button className="bg-green-400 text-black font-bold py-2 px-4 rounded hover:bg-green-500">
+              GET
+            </button>
+            </Link>
+          </div>
+}
+        </div>
+      </div>
     </div>
   );
 }
