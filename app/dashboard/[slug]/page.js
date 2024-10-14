@@ -169,7 +169,7 @@ return (
           {donation.ngoDetails && (
             <div>
               <h3 className='bg-black text-white text-2xl font-bold text-center'>NGO Details</h3>
-              <p><strong>Organisation Name:</strong> {donation.ngoDetails.username}</p>
+              <p><strong>Organisation Name:</strong> {donation.ngoDetails.organisationName}</p>
               <p><strong>Phone Number:</strong> {donation.ngoDetails.phoneNumber}</p>
             </div>
           )}
