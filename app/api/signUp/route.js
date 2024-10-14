@@ -4,48 +4,88 @@ import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import signup from "@/models/signup";
+
 export async function POST(request) {
     try {
         await connectDB();
-        const body=await request.json();
-        const {email,password,organisationType,fullName,username,phoneNumber,organisationName}=body;
-        const existingUser=await Signup.findOne({$or:[{email},{username}]});
-        if(existingUser){
-            return NextResponse.json({error:"User already exists"},{status:400})
+        const body = await request.json();
+        const {
+            email,
+            password,
+            organisationType,
+            fullName,
+            username,
+            phoneNumber,
+            organisationName,
+            location // Expecting location as { type: 'Point', coordinates: [lng, lat] }
+        } = body;
+
+        // Validate location
+        if (!location || location.type !== 'Point' || !Array.isArray(location.coordinates) || location.coordinates.length !== 2) {
+            return NextResponse.json({ error: "Invalid location data" }, { status: 400 });
         }
-        const hashedPassword=await bcrypt.hash(password,10);
-        let details={email,password:hashedPassword,organisationType,fullName,username,phoneNumber,organisationName};
-        const newUser=new Signup(details);
+
+        // Check for existing user
+        const existingUser = await Signup.findOne({ $or: [{ email }, { username }] });
+        if (existingUser) {
+            return NextResponse.json({ error: "User already exists" }, { status: 400 });
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create new user
+        const newUser = new Signup({
+            email,
+            password: hashedPassword,
+            organisationType,
+            fullName,
+            username,
+            phoneNumber,
+            organisationName,
+            location
+        });
+
         await newUser.save();
-        const token=jwt.sign({userId:newUser._id},process.env.JWT_SECRET,{expiresIn:"30d"});
-        return NextResponse.json({success:true,message:"User created successfully",token},{status:201})
+
+        // Generate JWT token
+        const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+
+        return NextResponse.json({ success: true, message: "User created successfully", token }, { status: 201 });
 
     } catch (error) {
-        return NextResponse.json({error:error.message},{status:500})
+        console.error('Error creating user:', error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
+
 export async function GET(request) {
-    await connectDB();
-  const { searchParams } = new URL(request.url);
-  const userId = searchParams.get('userId');
+    try {
+        await connectDB();
+        const { searchParams } = new URL(request.url);
+        const userId = searchParams.get('userId');
 
-  if (!userId) {
-    return new Response(JSON.stringify({ error: 'User ID is required' }), { status: 400 });
-  }
+        if (!userId) {
+            return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
+        }
 
-  try {// Replace with your database name
+        // Convert userId to ObjectId
+        const useridtoobj = new mongoose.Types.ObjectId(userId);
 
-    // Find the user by _id
-    const useridtoobj=new mongoose.Types.ObjectId(userId);
-    const user = await Signup.findOne({ _id: useridtoobj });
-    if (!user) {
-      return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 });
+        // Find the user by _id
+        const user = await Signup.findOne({ _id: useridtoobj });
+        if (!user) {
+            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+        }
+
+        return NextResponse.json({
+            organisationType: user.organisationType,
+            organisationName: user.organisationName,
+            location: user.location
+        }, { status: 200 });
+
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
-
-    return new Response(JSON.stringify({ organisationType: user.organisationType,organisationName: user.organisationName,phoneNumber:user.phoneNumber }), { status: 200 });
-  } catch (error) {
-    console.error('Error fetching user:', error);
-    return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
-  }
 }
