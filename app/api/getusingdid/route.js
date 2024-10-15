@@ -11,5 +11,6 @@ export async function GET(request){
         return NextResponse.json({donations},{status:200});
     }catch(error){
         console.log(error.message);
+        return NextResponse.json({error:error.message},{status:500});
     }
 }
