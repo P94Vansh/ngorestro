@@ -41,7 +41,7 @@ useEffect(() => {
       }));
 
       setDonations(mergedData);
-      console.log(mergedData)
+      console.log("mergedData",mergedData)
     } catch (error) {
       setError(error.message);
     } finally {
