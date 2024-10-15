@@ -105,7 +105,7 @@ function Notifications({ params }) {
     const fetchData = async () => {
       try {
         console.log("Starting fetch for dashboard data...");
-        const response = await fetch(`http://localhost:3000/api/dashboard?NGOId=${params.slug}`);
+        const response = await fetch(`/api/dashboard?NGOId=${params.slug}`);
         if (!response.ok) {
           console.error(`Dashboard fetch error: ${response.status} - ${response.statusText}`);
           return;
