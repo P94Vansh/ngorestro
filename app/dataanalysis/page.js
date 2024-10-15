@@ -9,7 +9,7 @@ const TopRestaurants = () => {
             try {
                 const response = await fetch('/api/gettoprestro');
                 const data = await response.json();
-
+                console.log("dataofuser",data)
                 if (response.ok) {
                     setTopRestaurants(data.data);
                 } else {
