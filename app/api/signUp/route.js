@@ -83,6 +83,7 @@ export async function GET(request) {
         return NextResponse.json({
             organisationType: user.organisationType,
             organisationName: user.organisationName,
+            phoneNumber: user.phoneNumber,
             location: user.location,
             NoofDonations: user.NoofDonations,
             upiId: user.upiId
