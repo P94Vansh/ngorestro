@@ -17,7 +17,8 @@ export async function POST(request) {
             username,
             phoneNumber,
             organisationName,
-            location // Expecting location as { type: 'Point', coordinates: [lng, lat] }
+            location,// Expecting location as { type: 'Point', coordinates: [lng, lat] }
+            upiId,
         } = body;
 
         // Validate location
@@ -43,7 +44,8 @@ export async function POST(request) {
             username,
             phoneNumber,
             organisationName,
-            location
+            location,
+            upiId,
         });
 
         await newUser.save();
@@ -81,11 +83,42 @@ export async function GET(request) {
         return NextResponse.json({
             organisationType: user.organisationType,
             organisationName: user.organisationName,
-            location: user.location
+            location: user.location,
+            NoofDonations: user.NoofDonations,
+            upiId: user.upiId
         }, { status: 200 });
 
     } catch (error) {
         console.error('Error fetching user:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
+}
+
+export async function PUT(request) {
+  try {
+      await connectDB();
+      const { userId } = await request.json();
+
+      if (!userId) {
+          return NextResponse.json({ error: "User ID is required" }, { status: 400 });
+      }
+
+      // Use the userId directly as it is the _id in MongoDB
+      console.log(userId);
+      const result = await Signup.findByIdAndUpdate(
+          userId,
+          { $inc: { NoofDonations: 1 } },
+          { new: true }
+      );
+
+      if (!result) {
+          return NextResponse.json({ error: "User not found" }, { status: 404 });
+      }
+
+      return NextResponse.json({ success: true, message: "Donation count updated successfully", donationCount: result.donationCount }, { status: 200 });
+
+  } catch (error) {
+      console.error('Error updating donation count:', error);
+      return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }

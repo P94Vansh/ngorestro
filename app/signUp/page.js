@@ -13,7 +13,8 @@ const Page = () => {
         username: '',
         phoneNumber: '',
         organisationName: '',
-        location: { type: 'Point', coordinates: [0, 0] }
+        location: { type: 'Point', coordinates: [0, 0] },
+        upiId: '',
     });
 
     const handleChange = (e) => {
@@ -46,6 +47,18 @@ const Page = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (formData.organisationType === "Restaurant") {
+            if (formData.upiId === "") {
+                alert("Please enter your UPI ID");
+                return;
+            }
+        }
+        if (formData.organisationType === "NGO") {
+            if (formData.upiId !== "") {
+                alert("UPI ID is not required for NGO");
+                return;
+            }
+        }
         if (formData.organisationType === "default") {
             alert("Please select an organisation type");
             return;
@@ -65,13 +78,15 @@ const Page = () => {
                     email: '',
                     password: '',
                     organisationType: 'default',
+                    fullName: '',
                     username: '',
                     phoneNumber: '',
                     organisationName: '',
-                    location: { type: 'Point', coordinates: [0, 0] }
+                    location: { type: 'Point', coordinates: [0, 0] },
+                    upiId: '',
                 });
                 localStorage.setItem("token", data.token);
-                router.push("/login");
+                window.location.href = "/";
             } else {
                 alert(data.error);
             }
@@ -149,6 +164,10 @@ const Page = () => {
                                 <label htmlFor="organisationName" className="peer-focus:font-medium absolute text-sm text-black dark:text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-green-600 peer-focus:dark:text-green-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Organisation Name</label>
                             </div>
                         </div>
+                            <div className="relative z-0 w-full mb-5 group">
+                                <input type="text" name="upiId" id="upiId" value={formData.upiId} onChange={handleChange} className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer" placeholder=" " />
+                                <label htmlFor="upiId" className="peer-focus:font-medium absolute text-sm text-black dark:text-black duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-green-600 peer-focus:dark:text-green-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">UPI ID(ONLY FOR RESTAURANT)</label>
+                            </div>
                         <div className="flex flex-col space-y-4">
                             <button type="button" onClick={handleGeolocation} className="bg-blue-500 text-white p-2 rounded">Use My Location</button>
                             <button type="submit" className="relative inline-block group">

@@ -103,37 +103,53 @@ export default function Home() {
         <div className="flex gap-6">
           {/* Card 1 */}
           {userName.organisationType==="Restaurant" &&
-          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black">
+          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black hover:bg-green-500 ">
             <h2 className="text-xl font-bold mb-2">DONATE NOW</h2>
             <p className="mb-4">
               Donate your surplus food to help those in need and promote sustainability. Every contribution counts—whether you&apos;re a restaurant, grocery store, or individual.
             </p>
             <Link href={linkHref}>
-            <button className="bg-green-400 text-black font-bold py-2 px-4 rounded hover:bg-green-500">
+            <button className="bg-green-800 text-black font-bold py-2 px-4 rounded hover:bg-green-500">
               DONATE
             </button>
             </Link>
           </div>
           }
           {/* Card 2 */}
-          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black">
-            <h2 className="text-xl font-bold mb-2">FIND AVAILABLE FOOD</h2>
+        
+          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black hover:bg-green-500">
+            <h2 className="text-xl font-bold mb-2">TOP 3 DONORS</h2>
             <p className="mb-4">
-              Browse surplus food from local businesses and individuals ready for pickup. Discover fresh fruits, vegetables, baked goods, and meals while helping to reduce food waste.
+            Get top 3 restaurants who donated the most food.
             </p>
-            <button className="bg-green-400 text-black font-bold py-2 px-4 rounded hover:bg-green-500">
-              FIND
+            <Link href={'/dataanalysis'}>
+            <button className="bg-green-400 text-black font-bold py-2 px-4 rounded hover:bg-green-800">
+              GET
             </button>
+            </Link>
           </div>
           {userName.organisationType==="NGO" &&
-          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black">
+          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black hover:bg-green-500">
             <h2 className="text-xl font-bold mb-2">GET YOUR REQUESTS</h2>
             <p className="mb-4">
               Get your requests from the Restaurants .
             </p>
             <Link href={getRequests}>
-            <button className="bg-green-400 text-black font-bold py-2 px-4 rounded hover:bg-green-500">
+            <button className="bg-green-400 text-black font-bold py-2 px-4 rounded hover:bg-green-800">
               GET
+            </button>
+            </Link>
+          </div>
+}
+          {userName.organisationType==="NGO" &&
+          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black hover:bg-green-500">
+            <h2 className="text-xl font-bold mb-2">FEEDBACK</h2>
+            <p className="mb-4">
+              Give your feedback about the Restaurant.
+            </p>
+            <Link href={'/feedback/'+userName.organisationName}>
+            <button className="bg-green-400 text-black font-bold py-2 px-4 rounded hover:bg-green-800">
+              GIVE
             </button>
             </Link>
           </div>

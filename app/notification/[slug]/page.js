@@ -1,10 +1,105 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+const StyledWrapper = styled.div`
+  padding: 16px;
+  margin: 8px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+`;
+
 
 function Notifications({ params }) {
   const [data, setData] = useState([]);
   const [userData,setUserData]=useState([])
   const [loading, setLoading] = useState(true);
+  const StyledWrapper = styled.div`
+  .card-title {
+  color: #262626;
+  font-size: 1.5em;
+  line-height: normal;
+  font-weight: 700;
+  margin-bottom: 0.5em;
+}
+
+.small-desc {
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1.5em;
+  color: #452c2c;
+}
+
+.small-desc {
+  font-size: 1em;
+}
+
+.go-corner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 2em;
+  height: 2em;
+  overflow: hidden;
+  top: 0;
+  right: 0;
+  background: linear-gradient(135deg, #6293c8, #384c6c);
+  border-radius: 0 4px 0 32px;
+}
+
+.go-arrow {
+  margin-top: -4px;
+  margin-right: -4px;
+  color: white;
+  font-family: courier, sans;
+}
+
+.card {
+  display: block;
+  position: relative;
+  max-width: 400px;
+  max-height: 800px;
+  background-color: #f2f8f9;
+  border-radius: 10px;
+  padding: 2em 1.2em;
+  margin: 12px;
+  text-decoration: none;
+  z-index: 0;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #c3e6ec, #a7d1d9);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.card:before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -16px;
+  right: -16px;
+  background: linear-gradient(135deg, #364a60, #384c6c);
+  height: 32px;
+  width: 32px;
+  border-radius: 32px;
+  transform: scale(1);
+  transform-origin: 50% 50%;
+  transition: transform 0.35s ease-out;
+}
+
+.card:hover:before {
+  transform: scale(28);
+}
+
+.card:hover .small-desc {
+  transition: all 0.5s ease-out;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.card:hover .card-title {
+  transition: all 0.5s ease-out;
+  color: #ffffff;
+}
+
+`;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,15 +177,20 @@ function Notifications({ params }) {
   }
 
   return (
-    <div className="p-4 bg-gray-800 min-h-screen text-white">
-      <h1 className="text-2xl font-bold text-center">View Your Requests</h1>
-      <div className="flex justify-between mx-10 my-5 font-semibold text-2xl">
+    <div className=" bg-white min-h-screen text-white p-6 mb-4 mx-4 flex flex-col items-center justify-center">
+        
+    <h1 className="text-2xl text-black font-bold text-center">View Your Requests</h1>
+    
+      <div className=" mx-10 my-5 font-semibold text-2xl">
         {data.map((item, index) => (
-          <div key={index} className="bg-white shadow-md rounded-lg p-6 mb-4 mx-4">
-            <h2 className="text-xl font-bold mb-2 text-black text-center">Restaurant Name: {userData.organisationName}</h2>
+        <StyledWrapper key={index}>
+          <div className="card bg-white shadow-md rounded-lg p-6 mb-4 mx-4">
+            <p className="card-title text-xl font-bold mb-2 text-black text-center">
+              Restaurant Name: {userData.organisationName}
+            </p>
             {Array.isArray(item.donations) && item.donations.length > 0 ? (
               item.donations.map((donation, idx) => (
-                <div key={idx} className="border-t border-gray-200 pt-4 mt-4">
+                <div key={idx} className="border-t border-gray-200 pt-4 mt-4 text-sm">
                   <div className="text-lg font-semibold">Donation Details</div>
                   <div className="mt-2">
                     <div className="text-gray-700">Donation Type: {donation.donationType}</div>
@@ -99,16 +199,22 @@ function Notifications({ params }) {
                     <div className="text-gray-700">Expiration Time: {donation.expirationTime}</div>
                     <div className="text-gray-700">Mobile Number: {donation.phoneNumber}</div>
                     <div className="text-gray-700">Status: {donation.status || "Status not available"}</div>
+                    <div className="go-corner">
+                      <div className="go-arrow">&rarr;</div>
+                    </div>
                   </div>
                 </div>
               ))
             ) : (
               <div className="text-gray-500">No donations available</div>
-              )}
-            </div>
-        ))}
-      </div>
+            )}
+          </div>
+        </StyledWrapper>
+      ))}
+      {/* Add the Card component here */}
+      
     </div>
+  </div>
   );
 }
 

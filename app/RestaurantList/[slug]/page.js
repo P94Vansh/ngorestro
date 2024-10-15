@@ -7,6 +7,7 @@ const RestaurantList = ({ params }) => {
   const [data, setData] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
   const [maxDistance, setMaxDistance] = useState(50); // Maximum distance in kilometers
+  const [searchQuery, setSearchQuery] = useState(''); // New state for search term
 
   useEffect(() => {
     const fetchData = async () => {
@@ -106,6 +107,8 @@ const RestaurantList = ({ params }) => {
         <div className="flex justify-center mb-8 relative mx-auto w-[450px]">
           <input
             type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search for Nearby Restaurant"
             className="p-2 w-full max-w-md bg-gray-100 placeholder:text-black rounded-full px-3"
           />
@@ -113,7 +116,7 @@ const RestaurantList = ({ params }) => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {data
-            .filter(({ location }) => {
+            .filter(({ location,restroname }) => {
               if (!userLocation || !location) return false;
               const distance = calculateDistance(
                 userLocation.latitude,
@@ -123,7 +126,7 @@ const RestaurantList = ({ params }) => {
               );
               console.log("distance",distance)
               console.log("maxDistance",maxDistance)
-              return distance <= maxDistance;
+              return distance <= maxDistance && restroname.toLowerCase().includes(searchQuery.toLowerCase());
             })
             .map(({ donationId, restroname, donationType, quantity, expirationTime, phoneNumber, address, location, status }, index) => (
               status !== "accepted" && (
@@ -140,9 +143,6 @@ const RestaurantList = ({ params }) => {
                       onClick={() => handleSendRequest(donationId)}
                     >
                       SEND REQUEST
-                    </button>
-                    <button className="bg-green-500 text-white p-2 rounded mt-4 hover:bg-green-600 w-full">
-                      Donate Now
                     </button>
                   </div>
                 </div>

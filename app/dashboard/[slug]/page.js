@@ -117,6 +117,7 @@ const rejectDonation = async (donationId) => {
   } catch (error) {
     console.error('Error rejecting donation:', error);
   }
+  window.location.reload();
 };
 // ... existing code ...
 const deleteDonation = async (donationId) => {

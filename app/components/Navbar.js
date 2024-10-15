@@ -51,6 +51,7 @@ const Navbar = () => {
         setIsOpen(!isOpen);
     }
     useEffect(()=>{
+      try{
       const token = localStorage.getItem('token');
       const userId = jwt.decode(token).userId;
       const fetchUserName = async () => {
@@ -65,6 +66,9 @@ const Navbar = () => {
         console.log("data",data)
       } 
       fetchUserName();
+    }catch(error){
+      console.log("error",error)
+    }
     },[])
   return (
     <div>
@@ -102,7 +106,7 @@ const Navbar = () => {
         </li>
         {login ? (
         <li>
-          <RxAvatar className='text-white text-3xl cursor-pointer hover:text-green-500'/>
+         <Link href={"/login"}><RxAvatar className='text-white text-3xl cursor-pointer hover:text-green-500'/></Link>
         </li>
         ) : (
           <li>

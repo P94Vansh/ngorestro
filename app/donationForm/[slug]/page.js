@@ -41,6 +41,14 @@
           headers:{"Content-Type":"application/json"},
           body:JSON.stringify(formData),
         });
+        const res=await fetch('/api/signUp',{
+          method:'PUT',
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({userId:formData.userName}),
+        });
+        const data=await res.json();
+        console.log(data);
+
         if(response.ok){
           console.log('Donation successful');
           setFormData({ donationId:uuidv4(),userName:formData.userName,donationType:'default',quantity:'',address:'',expirationTime:'',phoneNumber:'',foodDescription:''});
