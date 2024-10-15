@@ -41,11 +41,11 @@ useEffect(() => {
       }));
 
       setDonations(mergedData);
+      console.log(mergedData)
     } catch (error) {
       setError(error.message);
     } finally {
       setLoading(false);
-      console.log(donations);
     }
   };
 
