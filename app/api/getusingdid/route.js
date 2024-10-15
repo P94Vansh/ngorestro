@@ -9,8 +9,7 @@ export async function GET(request){
         const donationId=searchParams.get("donationId");
         const donations=await Donation.find({donationId});
         return NextResponse.json({donations},{status:200});
-    }catch(error){
-        console.log(error.message);
+        }catch(error){
         return NextResponse.json({error:error.message},{status:500});
     }
 }

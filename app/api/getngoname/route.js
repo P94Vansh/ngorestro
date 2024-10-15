@@ -9,7 +9,6 @@ export async function GET(request){
         const dashboard = await Dashboard.find({donationId:donationId});
         return NextResponse.json({ dashboard }, { status: 200 });
     } catch (error) {
-        console.log(error.message);
         return NextResponse.json({ message: "Internal server error" }, { status: 500 });
     }   
 }

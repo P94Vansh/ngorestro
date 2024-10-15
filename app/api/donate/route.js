@@ -10,7 +10,6 @@ export async function POST(request){
         await newDonation.save();
         return NextResponse.json({success:true,message:"Donation successful"},{status:201});
     } catch (error) {
-        console.log(error.message);
         return NextResponse.json({success:false,error:error.message},{status:500});
     }
 }
@@ -20,7 +19,7 @@ export async function GET(request){
         const donations=await Donation.find();
         return NextResponse.json({success:true,donations},{status:200});
     }catch(error){
-        console.log(error.message);
+        return NextResponse.json({success:false,error:error.message},{status:500});
     }
 }
 export async function PUT(request){
@@ -31,7 +30,6 @@ export async function PUT(request){
         await Donation.findOneAndUpdate({donationId},{$set:{status}});
         return NextResponse.json({success:true,message:"Donation updated successfully"},{status:200});
     }catch(error){
-        console.log(error.message);
         return NextResponse.json({success:false,error:error.message},{status:500});
     }
 }
@@ -47,7 +45,6 @@ try{
     return NextResponse.json({success:true,message:"Donation deleted successfully"},{status:200});
 }
 catch(error){
-    console.log(error.message);
     return NextResponse.json({success:false,error:error.message},{status:500});
 }
 }

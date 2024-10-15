@@ -57,10 +57,10 @@ const LoginPage = () => {
 
                 <div style={{ position: 'relative', zIndex: 2 }} className="flex flex-col items-center justify-center h-full">
                     <div className='w-full'>
-                        <div className='rounded-lg bg-green-700 max-w-md mx-auto'>
+                        <div className='rounded-lg md:mx-auto bg-green-700 max-w-md mx-4'>
                             <div className='text-2xl text-center font-bold py-2 text-white'>SignIn</div>
                         </div>
-                        <form onSubmit={handleLogin} className="max-w-md mx-auto bg-white p-4 rounded-lg">
+                        <form onSubmit={handleLogin} className="max-w-md md:mx-auto mx-4 bg-white p-4 rounded-lg">
                             <div className='pb-4'>
                                 <div className='text-center text-black font-semibold text-3xl '>LogIn to Start</div>
                                 <div className='text-center text-black font-semibold text-3xl'>Making a Difference</div>

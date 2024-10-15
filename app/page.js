@@ -19,7 +19,7 @@ export default function Home() {
     }
   }
   catch(error){
-    console.log(error)
+    console.log("error",error.message)
   }
   }, []);
 
@@ -27,14 +27,13 @@ export default function Home() {
     try{  
     const token = localStorage.getItem("token");
     const decodedToken = jwt.decode(token,process.env.JWT_SECRET);
-    console.log(decodedToken)
     const userId = decodedToken.userId;
     if (token) {
       setGetRequests(`/notification/${userId}`);
     }
   }
   catch(error){
-    console.log(error)
+    console.log("error:",error.message)
   }
   }, []);
 
@@ -44,7 +43,6 @@ export default function Home() {
         const token = localStorage.getItem("token");
         const decodedToken = jwt.decode(token,process.env.JWT_SECRET);
         const userId = decodedToken.userId;
-        console.log(userId)
         if (userId) {
           const response = await fetch(`/api/signUp?userId=${userId}`, {
             method: 'GET',
@@ -55,7 +53,6 @@ export default function Home() {
 
 
           const data = await response.json();
-          console.log(data.organisationType)
           setUserName(data);
         }
       } catch (error) {
@@ -85,8 +82,8 @@ export default function Home() {
           }}
         />
         <div className="flex  flex-col items-center justify-center h-full">
-          <div style={{ color: 'white', position: 'relative', zIndex: 2 }} className='text-4xl font-bold'>FIGHT HUNGER, SAVE FOOD,</div>
-          <div style={{ color: 'white', position: 'relative', zIndex: 2 }} className='text-4xl font-bold'>SHARE A MEAL</div>
+          <div style={{ color: 'white', position: 'relative', zIndex: 2 }} className='md:text-4xl text-2xl font-bold'>FIGHT HUNGER, SAVE FOOD,</div>
+          <div style={{ color: 'white', position: 'relative', zIndex: 2 }} className='md:text-4xl text-2xl font-bold'>SHARE A MEAL</div>
           <Link href="/signUp"> <button className="relative inline-block text-lg group mt-4">
           {!login && <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
                   <span className="absolute inset-0 w-full h-full px-4 py-2 rounded-lg bg-green-400"></span>
@@ -100,16 +97,16 @@ export default function Home() {
         </div>
       </div>
       <div className="flex justify-center items-center py-10 bg-green-800">
-        <div className="flex gap-6">
+        <div className="flex flex-col md:flex-row gap-6">
           {/* Card 1 */}
           {userName.organisationType==="Restaurant" &&
-          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black hover:bg-green-500 ">
+          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black hover:bg-green-900">
             <h2 className="text-xl font-bold mb-2">DONATE NOW</h2>
             <p className="mb-4">
               Donate your surplus food to help those in need and promote sustainability. Every contribution counts—whether you&apos;re a restaurant, grocery store, or individual.
             </p>
             <Link href={linkHref}>
-            <button className="bg-green-800 text-black font-bold py-2 px-4 rounded hover:bg-green-500">
+            <button className="bg-green-800 text-black font-bold py-2 px-4 rounded hover:bg-green-900">
               DONATE
             </button>
             </Link>
@@ -117,7 +114,7 @@ export default function Home() {
           }
           {/* Card 2 */}
         
-          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black hover:bg-green-500">
+          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black hover:bg-green-900">
             <h2 className="text-xl font-bold mb-2">TOP 3 DONORS</h2>
             <p className="mb-4">
             Get top 3 restaurants who donated the most food.
@@ -142,7 +139,7 @@ export default function Home() {
           </div>
 }
           {userName.organisationType==="NGO" &&
-          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black hover:bg-green-500">
+          <div className="bg-black bg-opacity-50 rounded-lg p-6 text-white max-w-xs shadow-md shadow-black hover:bg-green-900">
             <h2 className="text-xl font-bold mb-2">FEEDBACK</h2>
             <p className="mb-4">
               Give your feedback about the Restaurant.

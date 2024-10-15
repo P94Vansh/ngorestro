@@ -31,7 +31,6 @@ const handleSubmit = async (e) => {
         body: JSON.stringify(formData)
       });
       if (emailResponse.ok) {
-        console.log('Message and email sent successfully');
         setFormData({name:'', email:'', message:''});
       } else {
         console.error('Error sending email',);
@@ -46,11 +45,11 @@ const handleSubmit = async (e) => {
   return (
     <div>
     <section className="bg-green-500 py-10">
-      <div className="max-w-[60vw] mx-auto bg-white shadow-md p-6 flex gap-6">
+      <div className="max-w-[85vw] md:max-w-[60vw] mx-auto bg-white shadow-md p-6 flex md:flex-row flex-col gap-6">
         
         <div>
-        <h3 className="text-3xl font-bold mb-4">Contact Us</h3>
-        <p className="mb-6">We are all ears and are available 24/7</p>
+        <h3 className="text-3xl font-bold mb-4 text-center md:text-left">Contact Us</h3>
+        <p className="mb-6 text-center md:text-left">We are all ears and are available 24/7</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
@@ -87,7 +86,7 @@ const handleSubmit = async (e) => {
       
       </div>
       <div>
-      <img src="contactus.jpg" alt="Contact Us" className='w-[30vw] h-[20vw] object-cover'/>
+      <img src="contactus.jpg" alt="Contact Us" className='w-[30vw] h-[20vw] object-cover md:block hidden'/>
       <div className="mt-6 space-y-2">
           <div className="flex items-center">
             <span className="mr-2">📍</span> India

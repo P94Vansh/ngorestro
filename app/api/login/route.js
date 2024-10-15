@@ -8,14 +8,9 @@ export async function POST(request) {
     const { username, password } = await request.json();
     try {
         await connectDB();
-        console.log('Database connected');
         
-        // Log the input data
-        console.log(`Attempting login with username: ${username}, password: ${password}`);
         
-        // Check if user exists
         const user = await Signup.findOne({ username });
-        console.log('User found:', user);
         
         if (user) {
             const passwordMatch=await bcrypt.compare(password,user.password);
@@ -30,7 +25,6 @@ export async function POST(request) {
             return NextResponse.json({ success: false, message: 'Invalid username or password' }, { status: 401 });
         }
     } catch (error) {
-        console.log('Error:', error.message);
         return NextResponse.json({ success: false, error: error.message }, { status: 500 });
     }
 }

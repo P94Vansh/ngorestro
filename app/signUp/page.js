@@ -29,7 +29,6 @@ const Page = () => {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const { latitude, longitude } = position.coords;
-                    console.log(`Geolocation obtained: Latitude ${latitude}, Longitude ${longitude}`);
                     setFormData({
                         ...formData,
                         location: { type: 'Point', coordinates: [longitude, latitude] }

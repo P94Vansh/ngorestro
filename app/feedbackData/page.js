@@ -10,7 +10,6 @@ const FeedbackData = () => {
             const res = await fetch('/api/feedback');
             const data = await res.json();
             setFeedback(data.feedback);
-            console.log(data);
         };
         fetchFeedback();
     }, []);

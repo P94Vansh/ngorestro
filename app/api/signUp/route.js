@@ -90,7 +90,6 @@ export async function GET(request) {
         }, { status: 200 });
 
     } catch (error) {
-        console.error('Error fetching user:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
@@ -104,8 +103,6 @@ export async function PUT(request) {
           return NextResponse.json({ error: "User ID is required" }, { status: 400 });
       }
 
-      // Use the userId directly as it is the _id in MongoDB
-      console.log(userId);
       const result = await Signup.findByIdAndUpdate(
           userId,
           { $inc: { NoofDonations: 1 } },

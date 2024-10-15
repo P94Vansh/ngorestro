@@ -11,7 +11,6 @@ export async function POST(request) {
         await dashboard.save();
         return NextResponse.json({ message: "Request sent successfully" }, { status: 201 });
     } catch (error) {
-        console.log(error.message);
         return NextResponse.json({ message: "Internal server error" }, { status: 500 });
     }
 }
@@ -23,7 +22,6 @@ export async function GET(request){
         const dashboard = await Dashboard.find({NGOId:NGOId});
         return NextResponse.json({ dashboard }, { status: 200 });
     } catch (error) {
-        console.log(error.message);
         return NextResponse.json({ message: "Internal server error" }, { status: 500 });
     }   
 }
@@ -32,7 +30,6 @@ export async function DELETE(request) {
     try {
         await connectDB();
         const { donationId, NGOId } = await request.json();
-        console.log(donationId,NGOId);
 
         // Validate input
         if (!donationId || !NGOId) {
@@ -46,7 +43,6 @@ export async function DELETE(request) {
             return NextResponse.json({ message: "Donation not found" }, { status: 404 });
         }
 
-        console.log(donationId, NGOId);
         return NextResponse.json({ message: "Donation deleted successfully" }, { status: 200 });
     } catch (error) {
         console.error("Error deleting donation:", error);

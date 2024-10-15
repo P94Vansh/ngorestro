@@ -17,7 +17,6 @@ useEffect(() => {
       }
       const donationsData = await donationsResponse.json();
       setDonations(donationsData.donations);
-      console.log(donationsData.donations);
 
       // Fetch all NGO details and store them in a map
       const ngoDetailsMap = {};
@@ -30,7 +29,6 @@ useEffect(() => {
           throw new Error('Failed to fetch NGO details');
         }
         const ngoData = await ngoResponse.json();
-        console.log(ngoData)
         ngoDetailsMap[donation.userName] = ngoData;
       }));
 
@@ -41,7 +39,6 @@ useEffect(() => {
       }));
 
       setDonations(mergedData);
-      console.log("mergedData",mergedData)
     } catch (error) {
       setError(error.message);
     } finally {
@@ -65,7 +62,6 @@ const acceptDonation = async (donationId) => {
     if (!response.ok) {
       throw new Error('Failed to accept donation');
     }
-    console.log('Donation accepted successfully');
     setDonations((prevDonations) =>
       prevDonations.map((donation) =>
         donation.donationId === donationId
@@ -91,8 +87,6 @@ const rejectDonation = async (donationId) => {
     if (!response.ok) {
       throw new Error('Failed to reject donation');
     }
-    console.log(donationId,params.slug);
-    console.log('Donation rejected successfully');
 
     // Second request to delete the donation
     const deleteResponse = await fetch(`/api/dashboard`, {
@@ -105,7 +99,6 @@ const rejectDonation = async (donationId) => {
     if (!deleteResponse.ok) {
       throw new Error('Failed to delete donation');
     }
-    console.log('Donation deleted successfully');
 
     setDonations((prevDonations) =>
       prevDonations.map((donation) =>
@@ -133,7 +126,6 @@ const deleteDonation = async (donationId) => {
     if (!response.ok) {
       throw new Error('Failed to delete donation from donate API');
     }
-    console.log('Donation deleted successfully from donate API');
 
     // Second DELETE request to /api/dashboard
     const dashboardResponse = await fetch(`/api/dashboard`, {
@@ -146,7 +138,6 @@ const deleteDonation = async (donationId) => {
     if (!dashboardResponse.ok) {
       throw new Error('Failed to delete donation from dashboard API');
     }
-    console.log('Donation deleted successfully from dashboard API');
 
     setDonations((prevDonations) =>
       prevDonations.filter((donation) => donation.donationId !== donationId)

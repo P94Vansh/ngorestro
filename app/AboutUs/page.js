@@ -46,7 +46,7 @@ const AboutPage = () => {
 
         <div className="w-full flex md:grid-cols-2 gap-8 mb-16 justify-center items-center">
           <div className="text-center mx-auto">
-            <h3 className="text-2xl font-bold mb-4 text-green-500">
+            <h3 className="font-bold md:text-2xl text-xl mb-4 text-green-500">
               Our Mission: A Hunger-Free World
             </h3>
             <p className="mb-4">
@@ -71,7 +71,7 @@ const AboutPage = () => {
               className="w-40 h-40 rounded-full object-cover"
             />
           <div className="text-center mx-auto">
-            <h3 className="text-2xl font-bold mb-4 text-green-500">
+            <h3 className="font-bold md:text-2xl text-xl mb-4 text-green-500">
             How does MealBridge Work?
             </h3>
             <p className="mb-4">
@@ -83,7 +83,7 @@ const AboutPage = () => {
 
         <div className="w-full flex md:grid-cols-2 gap-8 mb-16 justify-center items-center">
           <div className="text-center mx-auto">
-            <h3 className="text-2xl font-bold mb-4 text-green-500">
+            <h3 className="font-bold md:text-2xl text-xl mb-4 text-green-500">
             Our Vision
             </h3>
             <p className="mb-4">
@@ -105,7 +105,7 @@ const AboutPage = () => {
           {faqs.map((faq, index) => (
             <div key={index}>
               <h3 className="text-xl text-green-500 mb-2">{faq.question}</h3>
-              <p>{faq.answer}</p>
+              <p >{faq.answer}</p>
             </div>
           ))}
         </div>

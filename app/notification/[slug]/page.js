@@ -104,14 +104,12 @@ function Notifications({ params }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("Starting fetch for dashboard data...");
         const response = await fetch(`/api/dashboard?NGOId=${params.slug}`);
         if (!response.ok) {
           console.error(`Dashboard fetch error: ${response.status} - ${response.statusText}`);
           return;
         }
         const dataResponse = await response.json();
-        console.log("Fetched dashboard data:", dataResponse);
 
         if (!dataResponse.dashboard || !Array.isArray(dataResponse.dashboard)) {
           console.error("Dashboard data is not an array or is undefined.");
@@ -121,7 +119,6 @@ function Notifications({ params }) {
         // Fetch donation data for each item and update state incrementally
         const fetchDonationData = async (item) => {
           const ngoId = item.NGOId;
-          console.log(`Fetching donation data for NGO ID: ${ngoId}`);
 
           try {
             const donationResponse = await fetch(`/api/donate?NGOId=${ngoId}`);
@@ -130,7 +127,6 @@ function Notifications({ params }) {
               return null;
             }
             const donationsData = await donationResponse.json();
-            console.log("Donations Data:", donationsData);
 
             // Merge the current item with donationsData into a single object
             return { ...item, ...donationsData };
@@ -147,8 +143,6 @@ function Notifications({ params }) {
 
         // Filter out any null values in case of fetch errors
         const validData = combinedDataArray.filter(item => item !== null);
-        console.log("Final combined data array:", validData);
-        console.log(validData[0].donations[0].status)
         setData(validData); // Update state with the combined data
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -163,10 +157,8 @@ function Notifications({ params }) {
     const fetchUserData=async()=>{
     for(let i=0;i<data.length;i++){
       const userId=data[i].donations[0].userName
-      console.log(userId)
       const response=await fetch(`/api/signUp?userId=${userId}`)
       const userData=await response.json()
-      console.log("userData",userData)
       setUserData(userData)
     }
   }

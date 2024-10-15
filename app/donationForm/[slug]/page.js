@@ -17,8 +17,6 @@
     useEffect(()=>{
       try {
         const decodedToken = jwt.decode(params.slug,process.env.JWT_SECRET);
-        console.log(decodedToken);
-        console.log(typeof decodedToken.userId);
         if (decodedToken && decodedToken.userId) {
           setFormData((prevData) => ({ ...prevData, userName: decodedToken.userId }));
         }
@@ -47,10 +45,8 @@
           body:JSON.stringify({userId:formData.userName}),
         });
         const data=await res.json();
-        console.log(data);
 
         if(response.ok){
-          console.log('Donation successful');
           setFormData({ donationId:uuidv4(),userName:formData.userName,donationType:'default',quantity:'',address:'',expirationTime:'',phoneNumber:'',foodDescription:''});
         }
         else{

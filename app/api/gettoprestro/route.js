@@ -14,7 +14,6 @@ export async function GET() {
         return NextResponse.json({ success: true, data: topRestaurants }, { status: 200 });
 
     } catch (error) {
-        console.error('Error fetching top restaurants:', error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
     }
 }

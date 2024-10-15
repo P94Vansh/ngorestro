@@ -13,12 +13,10 @@ const RestaurantList = ({ params }) => {
     const fetchData = async () => {
       const response = await fetch("/api/donate");
       const dataoutput = await response.json();
-      console.log(dataoutput.donations);
 
       const updatedData = await Promise.all(dataoutput.donations.map(async (restaurant) => {
         const userResponse = await fetch(`/api/signUp?userId=${restaurant.userName}`);
         const userData = await userResponse.json();
-        console.log("userData", userData);
 
         return {
           ...restaurant,
@@ -26,7 +24,6 @@ const RestaurantList = ({ params }) => {
           location: userData.location, // Assuming location is part of the user data
         };
       }));
-      console.log("updatedData", updatedData)
       setData(updatedData);
     };
 
@@ -91,8 +88,6 @@ const RestaurantList = ({ params }) => {
       const postResult = await postResponse.json();
       const putResult = await putResponse.json();
 
-      console.log('POST result:', postResult.message);
-      console.log('PUT result:', putResult.message);
 
       alert("Requests completed successfully");
     } catch (error) {
@@ -104,7 +99,7 @@ const RestaurantList = ({ params }) => {
   return (
     <div>
       <div className="bg-gray-900 min-h-screen p-8">
-        <div className="flex justify-center mb-8 relative mx-auto w-[450px]">
+        <div className="flex justify-center mb-8 relative mx-auto md:w-[450px] w-[300px]">
           <input
             type="text"
             value={searchQuery}
@@ -124,8 +119,6 @@ const RestaurantList = ({ params }) => {
                 location.coordinates[1], // Assuming location is stored as [longitude, latitude]
                 location.coordinates[0]
               );
-              console.log("distance",distance)
-              console.log("maxDistance",maxDistance)
               return distance <= maxDistance && restroname.toLowerCase().includes(searchQuery.toLowerCase());
             })
             .map(({ donationId, restroname, donationType, quantity, expirationTime, phoneNumber, address, location, status }, index) => (

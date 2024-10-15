@@ -47,6 +47,13 @@ const Navbar = () => {
     // useEffect(()=>{
     //   location.reload();
     // },[forceUpdate])
+    const handleLogout=()=>{
+      alert("Are you sure you want to logout?")
+      if(confirm){
+      localStorage.removeItem('token');
+      window.location.href="/"
+      }
+    }
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     }
@@ -63,11 +70,10 @@ const Navbar = () => {
         });
         const data = await response.json();
         setUserName(data);
-        console.log("data",data)
       } 
       fetchUserName();
     }catch(error){
-      console.log("error",error)
+      console.log("error",error.message)
     }
     },[])
   return (
@@ -106,7 +112,7 @@ const Navbar = () => {
         </li>
         {login ? (
         <li>
-         <Link href={"/login"}><RxAvatar className='text-white text-3xl cursor-pointer hover:text-green-500'/></Link>
+         <RxAvatar onClick={handleLogout} className='text-white text-3xl ml-3 md:ml-0 cursor-pointer hover:text-green-500'/>
         </li>
         ) : (
           <li>
