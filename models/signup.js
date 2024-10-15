@@ -46,7 +46,6 @@ const SignupSchema = new mongoose.Schema({
   upiId: {
     type: String,
     match: [/^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/, 'Please enter a valid UPI ID'],
-    unique: true,
   },
   NoofDonations:{
     type:Number,
