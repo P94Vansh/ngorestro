@@ -124,7 +124,7 @@ function Notifications({ params }) {
           console.log(`Fetching donation data for NGO ID: ${ngoId}`);
 
           try {
-            const donationResponse = await fetch(`http://localhost:3000/api/donate?NGOId=${ngoId}`);
+            const donationResponse = await fetch(`/api/donate?NGOId=${ngoId}`);
             if (!donationResponse.ok) {
               console.error(`Donation fetch error: ${donationResponse.status} - ${donationResponse.statusText}`);
               return null;
