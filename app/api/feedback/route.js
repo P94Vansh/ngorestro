@@ -8,17 +8,17 @@ export async function POST(req,res){
         await connectDB();
         const feedback=new fuser({NGOname,Restaurantname,Rating,Address});
         await feedback.save();
-        return NextResponse.json({message:"Feedback submitted successfully"});
+        return NextResponse.json({success:true,message:"Feedback submitted successfully"});
     }catch(error){
-        return NextResponse.json({message:"Error submitting feedback"});
+        return NextResponse.json({success:false,message:"Error submitting feedback"});
     }
 }
 export async function GET(req){
     try{
         await connectDB();
         const feedback=await fuser.find();
-        return NextResponse.json({feedback});
+        return NextResponse.json({success:true,feedback});
     }catch(error){
-        return NextResponse.json({message:"Error fetching feedback"});
+        return NextResponse.json({success:false,message:"Error fetching feedback"});
     }
 }
