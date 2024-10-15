@@ -164,7 +164,7 @@ function Notifications({ params }) {
     for(let i=0;i<data.length;i++){
       const userId=data[i].donations[0].userName
       console.log(userId)
-      const response=await fetch(`http://localhost:3000/api/signUp?userId=${userId}`)
+      const response=await fetch(`/api/signUp?userId=${userId}`)
       const userData=await response.json()
       console.log("userData",userData)
       setUserData(userData)
