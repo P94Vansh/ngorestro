@@ -13,7 +13,6 @@ const TopRestaurants = () => {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
-                console.log(data.data);
                 setRestaurants(data.data); // Assuming the response has a 'data' field
             } catch (error) {
                 setError(error.message);
