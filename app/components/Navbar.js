@@ -48,11 +48,11 @@ const Navbar = () => {
     //   location.reload();
     // },[forceUpdate])
     const handleLogout=()=>{
-      alert("Are you sure you want to logout?")
-      if(confirm){
+      if(confirm("Are you sure you want to logout?")){
       localStorage.removeItem('token');
       window.location.href="/"
       }
+
     }
     const toggleMenu = () => {
         setIsOpen(!isOpen);
