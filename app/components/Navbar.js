@@ -47,13 +47,12 @@ const Navbar = () => {
     // useEffect(()=>{
     //   location.reload();
     // },[forceUpdate])
-    const handleLogout = async () => {
+    const handleLogout = () => {
       if (confirm("Are you sure you want to logout?")) {
-          // Use setTimeout to allow the UI to update before redirecting
-          setTimeout(() => {
+          requestAnimationFrame(() => {
               localStorage.removeItem('token');
               window.location.href = "/";
-          }, 0);
+          });
       }
   };
     const toggleMenu = () => {
