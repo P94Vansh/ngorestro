@@ -27,6 +27,9 @@ const Footer = () => {
         <span className="text-xs md:text-xl">Contact Us</span>
         </Link>
       </div>
+      <div className='text-xs md:text-lg'>
+        <p>© 2024 Foodie. All rights reserved.- Site created by <a href="https://www.linkedin.com/in/vansh-gambhir-6490692bb/" target="_blank" className='text-blue-500'>Vansh Gambhir</a></p>
+      </div>
     </div>
   );
 }
