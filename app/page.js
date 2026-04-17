@@ -26,9 +26,12 @@ export default function Home() {
   useEffect(() => {
     try{  
     const token = localStorage.getItem("token");
-    const decodedToken = jwt.decode(token,process.env.JWT_SECRET);
-    const userId = decodedToken.userId;
-    if (token) {
+    if (!token) {
+      return;
+    }
+    const decodedToken = jwt.decode(token);
+    const userId = decodedToken?.userId;
+    if (userId) {
       setGetRequests(`/notification/${userId}`);
     }
   }
@@ -41,8 +44,11 @@ export default function Home() {
     const fetchUserName = async () => {
       try {
         const token = localStorage.getItem("token");
-        const decodedToken = jwt.decode(token,process.env.JWT_SECRET);
-        const userId = decodedToken.userId;
+        if (!token) {
+          return;
+        }
+        const decodedToken = jwt.decode(token);
+        const userId = decodedToken?.userId;
         if (userId) {
           const response = await fetch(`/api/signUp?userId=${userId}`, {
             method: 'GET',

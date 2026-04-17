@@ -20,9 +20,15 @@ const Navbar = () => {
         setToken(storedToken);
         if (storedToken) {
           const decoded = jwt.decode(storedToken);
-          setListingsHref(`/RestaurantList/${decoded.userId}`);
-          setDashboardHref(`/dashboard/${decoded.userId}`);
-          setLogin(true);
+          if (decoded?.userId) {
+            setListingsHref(`/RestaurantList/${decoded.userId}`);
+            setDashboardHref(`/dashboard/${decoded.userId}`);
+            setLogin(true);
+          } else {
+            setListingsHref('/signUp');
+            setDashboardHref('/signUp');
+            setLogin(false);
+          }
         } else {
           setListingsHref('/signUp');
           setDashboardHref('/signUp')
@@ -61,7 +67,14 @@ const Navbar = () => {
     useEffect(()=>{
       try{
       const token = localStorage.getItem('token');
-      const userId = jwt.decode(token).userId;
+      if (!token) {
+        return;
+      }
+      const decodedToken = jwt.decode(token);
+      const userId = decodedToken?.userId;
+      if (!userId) {
+        return;
+      }
       const fetchUserName = async () => {
         const response = await fetch(`/api/signUp?userId=${userId}`, {
           method: 'GET',

@@ -67,7 +67,7 @@ export async function GET(request) {
         const { searchParams } = new URL(request.url);
         const userId = searchParams.get('userId');
 
-        if (!userId) {
+        if (!userId || userId === 'undefined' || !mongoose.Types.ObjectId.isValid(userId)) {
             return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
         }
 
